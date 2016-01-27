@@ -1,0 +1,16 @@
+{
+    "name": "froala-embedly",
+    "version": "1.0.0",
+    "description": "An embedly plugin for the Froala WYSIWYG editor which can insert embedly cards from URL",
+    "main": [
+        "js/plugins/embedly.js"
+        "js/plugins/embedly.min.js"
+    ],
+    "license": "MIT",
+    "keywords": [
+        "froala", "embedly", "cards"
+    ],
+    "dependencies": {
+        "jquery": ">=1.11.0"
+    }
+}

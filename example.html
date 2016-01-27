@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Froala Image Caption Example</title>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.0.5/css/froala_editor.min.css">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<style>
+      .fr-popup ul.errorlist { display: block; padding: 0; margin: 0 0 5px 0; }
+      .fr-popup ul.errorlist li{
+        font-size: 12px;
+        line-height: 16px;
+        color: #b73018;
+        list-style-type:none;
+      }
+      .fr-small-text { font-size: 16px; }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.0.5/js/froala_editor.min.js"></script>
+	<script type="text/javascript" src="js/plugins/embedly.min.js"></script>
+    
+    <!-- Include embedly libraries -->
+    <script async src="https://cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+    <script src="https://cdn.embed.ly/jquery.embedly-3.1.1.min.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+      // Sets up the default key for the embedly jQuery Plugin.
+      $.embedly.defaults.key = '6b7042b76ab14d0a9e1eb29beb0d055b';
+    </script>
+</head>
+<body>
+<div id="editor" style="width: 800px;"></div>
+</body>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#editor').froalaEditor({
+      inlineMode: false,
+      toolbarButtons: ['bold', 'italic', 'paragraphFormat', 'quote', 'formatOL', 'formatUL', 'insertLink', 'embedlyBtn']
+    });
+  });
+</script>
+</html>
