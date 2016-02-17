@@ -48,6 +48,33 @@
 
   // The custom popup is defined inside a plugin (new or existing).
   $.FroalaEditor.PLUGINS.embedly = function (editor) {
+    
+    function _init(){
+        editor.events.on('keydown', function (e, ed) {
+            var $current_card;
+            var $el = $(editor.selection.element());
+            if ($el && $el.hasClass('embedly-card-area')){
+              $current_card = $el;
+            }
+            var key_code = e.which;
+            if ($current_card && (key_code == $.FroalaEditor.KEYCODE.BACKSPACE || key_code == $.FroalaEditor.KEYCODE.DELETE)) {
+              e.preventDefault();
+              remove($current_card);
+              return false;
+            }
+
+            if ($current_card && !editor.keys.ctrlKey(e)) {
+              e.preventDefault();
+              return false;
+            }
+        }, true);
+
+        // Make sure we don't leave empty tags.
+        editor.events.on('keydown', function () {
+          editor.$el.find('span.embedly-card-area:empty').remove();
+        });
+    }
+    
     // Create custom popup.
     function initPopup () {
       // Popup buttons.
@@ -190,9 +217,9 @@
               $snippet.attr('data-card-'+key, editor.opts.embedlyOptions[key]);
             }
           }
-          editor.html.insert('<p><span contenteditable="false" class="embedly-card-area" data-url="' + clean + '" data-title="' + $snippet.text() + '">' + $snippet[0].outerHTML + '</span></p><p><br></p>');
-          var $card_embed = editor.$el.find('.embedly-card-area');
-          editor.selection.setAfter($card_embed.parent().next().get(0));
+          editor.html.insert('<span contenteditable="false" class="fr-embedly embedly-card-area" data-url="' + clean + '" data-title="' + $snippet.text() + '">' + $snippet[0].outerHTML + '</span><p><br></p>');
+          var $card_embed = editor.$el.find('.fr-embedly');
+          $card_embed.removeClass('fr-embedly');
           editor.popups.hide('embedly.insert');
           editor.events.trigger('embedly.inserted', [$card_embed, clean, $snippet[0].outerHTML]);
           return true;
@@ -221,13 +248,34 @@
       insert(url);
       $(editor.original_window).scrollTop(t);
     }
+    
+    function remove ($current_card) {
+      if ($current_card) {
+        if (editor.events.trigger('embedly.beforeRemove', [$current_card]) !== false) {
+          var $card = $current_card;
+          editor.popups.hideAll();
+          editor.toolbar.enable();
+          $current_card = null;
 
+          editor.selection.setBefore($card.get(0)) || editor.selection.setAfter($card.get(0));
+          $card.remove();
+          editor.selection.restore();
+
+          editor.html.fillEmptyBlocks(true);
+
+          editor.events.trigger('embedly.removed', [$card]);
+        }
+      }
+    }
+    
     // Methods visible outside the plugin.
     return {
+      _init: _init,
       showPopup: showPopup,
       hidePopup: hidePopup,
       insertCallback: insertCallback,
-      resetPopup: resetPopup
+      resetPopup: resetPopup,
+      remove: remove
     }
   };
 

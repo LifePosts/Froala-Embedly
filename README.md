@@ -41,6 +41,15 @@ Add following CSS code for some styling:
     list-style-type:none;
   }
   .fr-small-text { font-size: 16px; }
+  .fr-element .embedly-card-area, .fr-element .embedly-card-hug {
+    user-select: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    clear: both;
+  }
 </style>
 ```
 
