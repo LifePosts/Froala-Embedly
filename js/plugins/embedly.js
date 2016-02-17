@@ -33,7 +33,7 @@
 }(function ($) {
 
   'use strict';
-  
+
   var urlRe = /^(http|https):\/\/(([a-zA-Z0-9$\-_.+!*'(),;:&=]|%[0-9a-fA-F]{2})+@)?(((25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])){3})|localhost|([a-zA-Z0-9\-\u00C0-\u017F]+\.)+([a-zA-Z]{2,}))(:[0-9]+)?(\/(([a-zA-Z0-9$\-_.+!*'(),;:@&=]|%[0-9a-fA-F]{2})*(\/([a-zA-Z0-9$\-_.+!*'(),;:@&=]|%[0-9a-fA-F]{2})*)*)?(\?([a-zA-Z0-9$\-_.+!*'(),;:@&=\/?]|%[0-9a-fA-F]{2})*)?(\#([a-zA-Z0-9$\-_.+!*'(),;:@&=\/?]|%[0-9a-fA-F]{2})*)?)?$/;
 
   // Define popup template.
@@ -190,12 +190,11 @@
               $snippet.attr('data-card-'+key, editor.opts.embedlyOptions[key]);
             }
           }
-          editor.selection.restore();
-          editor.html.insert('<span contenteditable="false" class="fr-jiv">' + $snippet[0].outerHTML + '</span><p><br></p>');
-          var $card_embed = editor.$el.find('.fr-jiv');
-          $card_embed.removeClass('fr-jiv');
+          editor.html.insert('<p><span contenteditable="false" class="embedly-card-area" data-url="' + clean + '" data-title="' + $snippet.text() + '">' + $snippet[0].outerHTML + '</span></p><p><br></p>');
+          var $card_embed = editor.$el.find('.embedly-card-area');
           editor.selection.setAfter($card_embed.parent().next().get(0));
           editor.popups.hide('embedly.insert');
+          editor.events.trigger('embedly.inserted', [$card_embed, clean, $snippet[0].outerHTML]);
           return true;
         });
 
@@ -263,5 +262,5 @@
       this.embedly.insertCallback();
     }
   })
-  
+
 }));
